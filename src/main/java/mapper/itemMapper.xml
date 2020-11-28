@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Itemmapper">
+<select id="getItem" resultType="model.Item">
+select * from user_item where code=#{code}
+</select>
+<insert id="putItem" >
+insert into user_item values(#{code},#{name},#{price},
+	#{info},#{origin})
+</insert>
+<select id="getItemCount" resultType="Integer">
+select count(*) as cnt from user_item
+</select>
+<select id="getItemList" resultType="model.Item"
+	parameterType="model.Condition">
+select * from
+(
+	(select a.*, rownum rn from 
+		(select * from user_item order by code desc) a
+	)
+)
+where rn between #{startRow} and #{endRow}
+</select>
+</mapper>
+
+
+
+
+
+
+
+

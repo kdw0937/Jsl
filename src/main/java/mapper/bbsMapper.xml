@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Mymapper">
+<!-- 	<select id="getItem" resultType="model.Item"> -->
+<!-- 	select * from shop_info order by item_no desc -->
+<!-- 	</select> -->
+<!-- 	<insert id="putItem" parameterType="model.Item"> -->
+<!-- 	insert into shop_info values(#{item_no},#{item_name}, -->
+<!-- 		#{item_price},#{item_desc},#{item_from}) -->
+<!-- 	</insert> -->
+<!-- 	<select id="getMaxNo" resultType="Integer"> -->
+<!-- 	select max(item_no) from shop_info -->
+<!-- 	</select> -->
+	<select id="readBBS" parameterType="Integer" 
+				resultType="model.Bbs">
+	select * from bbs_info where seqno=#{seqno}
+	</select>
+	<select id="getBBSCount" resultType="Integer">
+	select count(*) from bbs_info
+	</select>
+	<select id="getBBS" resultType="model.Bbs"
+			parameterType="model.Condition">
+	select seqno,title,id,content,bbs_date from
+	(
+		select a.*, rownum rn from 
+		(
+			(select * from bbs_info order by seqno desc)a
+		)
+	) where rn between #{startRow} and #{endRow}
+	</select>
+	<select id="getMax" resultType="Integer">
+	select max(seqno) from bbs_info
+	</select>
+	<insert id="putBBS" parameterType="model.Bbs" >
+	insert into bbs_info values(#{seqno},#{title},#{id},#{content},
+	#{bbs_date})
+	</insert>
+</mapper>
+
+
+
+

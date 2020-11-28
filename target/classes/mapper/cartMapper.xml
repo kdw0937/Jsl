@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Cartmapper">
+<select id="selectMaxCart" resultType="Integer">
+	select max(seqno) max_seqno from cart
+</select>
+<insert id="insertCart">
+	insert into cart values(#{seqno},#{code},#{num},#{id})
+</insert>
+<delete id="deleteCart">
+	delete from cart where code=#{code} and id=#{id}
+</delete>
+<update id="updateCart">
+	update cart set num=#{num}
+	where code = #{code} and id = #{id}
+</update>
+<select id="selectCart" resultType="model.CartItem">
+	select cart.code code, cart.num num, i.price price,
+			i.name name
+	from cart cart, user_item i
+	where cart.code = i.code and cart.id = #{id}
+</select>
+</mapper>
+
+
+
+
+
+
+
+

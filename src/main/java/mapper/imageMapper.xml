@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Imagemapper">
+	<update id="updateWritingInfo">
+	update image_writing set writer_name=#{writer_name},
+	email=#{email}, title=#{title}, content=#{content},
+	image_name=#{image_name}
+	where writing_id = #{writing_id}
+	</update>
+	<delete id="deleteWritingInfo">
+	delete from image_writing 
+	where writing_id = #{writing_id}
+	</delete>
+	<select id="getWritingInfoById" 
+				resultType="model.Writing">
+	select * from image_writing 
+	where writing_id = #{writing_id} 
+	</select>
+	<insert id="insertWriting">
+	insert into image_writing values(#{writing_id},
+	#{group_id},#{order_no},#{parent_id},#{register_date},
+	#{writer_name},#{email},#{image_name},#{password},
+	#{title},#{content})
+	</insert>
+	<select id="getMaxWritingId" resultType="Integer">
+	select max(writing_id) max_id from image_writing
+	</select>
+	<select id="getWritingInfo" resultType="model.Writing">
+	select * from (
+		select a.*, rownum rn from (
+			(select * from image_writing 
+			order by group_id desc, order_no asc) a
+		)
+	)where rn between #{startRow} and #{endRow}
+	</select>
+	<select id="selectMaxGroupId" resultType="Integer">
+	select max(group_id) max_id from image_writing
+	</select>
+	<update id="updateOrderNoReply">
+	update image_writing set order_no = order_no + 1
+	where group_id = #{group_id} and 
+			order_no >= #{order_no}
+	</update>
+	<select id="selectReplyPages" resultType="Integer">
+	select rn from (
+		select a.*, rownum rn from(
+			(
+				select * from image_writing
+				order by group_id desc, order_no asc
+			)a
+		)
+	) where writing_id = #{writing_id}
+	</select>
+	<select id="selectImageCount" resultType="Integer">
+	select count(*) from image_writing
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
